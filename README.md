@@ -44,8 +44,8 @@
 
 ```bash
 # 克隆仓库
-git clone https://github.com/qindashuai/qin-youcheng-java-portfolio.git
-cd qin-youcheng-java-portfolio
+git clone https://github.com/qindashuai/qin-dashuai-java-portfolio.git
+cd qin-dashuai-java-portfolio
 
 # 启动基础设施（MySQL、Redis、RabbitMQ）
 docker-compose up -d

@@ -30,7 +30,7 @@
 
 ```bash
 # 进入项目根目录
-cd qin-youcheng-java-portfolio
+cd qin-dashuai-java-portfolio
 
 # 启动MySQL、Redis、RabbitMQ
 docker-compose up -d mysql redis rabbitmq
