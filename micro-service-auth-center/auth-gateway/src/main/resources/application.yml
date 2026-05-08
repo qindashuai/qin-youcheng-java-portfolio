@@ -1,0 +1,58 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: auth-gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        namespace: public
+    sentinel:
+      transport:
+        dashboard: 127.0.0.1:8088
+        port: 8719
+      eager: true
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowed-origins: "*"
+            allowed-methods: "*"
+            allowed-headers: "*"
+            allow-credentials: true
+            max-age: 3600
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password:
+    database: 0
+    timeout: 5000ms
+    lettuce:
+      pool:
+        max-active: 20
+        max-idle: 10
+        min-idle: 5
+        max-wait: 3000ms
+
+jwt:
+  secret: qinyoucheng-micro-service-auth-center-jwt-secret-key-2024
+  access-token-expiration: 7200000
+  refresh-token-expiration: 604800000
+
+gateway:
+  white-list:
+    - /api/v1/auth/login
+    - /api/v1/auth/sso/callback
+    - /api/v1/auth/sso/ticket
+    - /api/v1/auth/refresh
+
+logging:
+  level:
+    com.qinyoucheng.auth.gateway: DEBUG
+    org.springframework.cloud.gateway: DEBUG

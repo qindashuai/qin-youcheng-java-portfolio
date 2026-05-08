@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://mysql:3306/enterprise_rag?useUnicode=true&characterEncoding=utf8mb4&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: ${MYSQL_USERNAME:root}
+    password: ${MYSQL_PASSWORD:root}
+  redis:
+    host: ${REDIS_HOST:redis}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD:}
+    database: 0
+    timeout: 5000ms
+
+rag:
+  ollama:
+    base-url: ${OLLAMA_BASE_URL:http://ollama:11434}
+    chat-model: ${CHAT_MODEL:deepseek-r1:7b}
+    embedding-model: ${EMBEDDING_MODEL:nomic-embed-text}
+
+logging:
+  level:
+    com.qinyoucheng.rag: info

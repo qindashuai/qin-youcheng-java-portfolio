@@ -1,0 +1,214 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: portfolio-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root123456
+      MYSQL_CHARSET: utf8mb4
+      TZ: Asia/Shanghai
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./supply-booking-system/sql/schema.sql:/docker-entrypoint-initdb.d/01-supply-schema.sql
+      - ./supply-booking-system/sql/data.sql:/docker-entrypoint-initdb.d/02-supply-data.sql
+      - ./enterprise-rag-knowledge/sql/schema.sql:/docker-entrypoint-initdb.d/03-rag-schema.sql
+      - ./enterprise-rag-knowledge/sql/data.sql:/docker-entrypoint-initdb.d/04-rag-data.sql
+      - ./micro-service-auth-center/sql/schema.sql:/docker-entrypoint-initdb.d/05-auth-schema.sql
+      - ./micro-service-auth-center/sql/data.sql:/docker-entrypoint-initdb.d/06-auth-data.sql
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-authentication-plugin=mysql_native_password
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot123456"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - portfolio-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: portfolio-redis
+    ports:
+      - "6379:6379"
+    command: redis-server --requirepass redis123456 --maxmemory 512mb --maxmemory-policy allkeys-lru
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "redis123456", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - portfolio-network
+
+  rabbitmq:
+    image: rabbitmq:3.12-management-alpine
+    container_name: portfolio-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin123456
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+    networks:
+      - portfolio-network
+
+  nacos:
+    image: nacos/nacos-server:v2.2.3
+    container_name: portfolio-nacos
+    environment:
+      MODE: standalone
+      SPRING_DATASOURCE_PLATFORM: mysql
+      MYSQL_SERVICE_HOST: mysql
+      MYSQL_SERVICE_PORT: 3306
+      MYSQL_SERVICE_DB_NAME: nacos_config
+      MYSQL_SERVICE_USER: root
+      MYSQL_SERVICE_PASSWORD: root123456
+      JVM_XMS: 256m
+      JVM_XMX: 512m
+    ports:
+      - "8848:8848"
+      - "9848:9848"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - portfolio-network
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: portfolio-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama-data:/root/.ollama
+    networks:
+      - portfolio-network
+
+  supply-booking-system:
+    build:
+      context: ./supply-booking-system
+      dockerfile: Dockerfile
+    container_name: portfolio-supply-booking
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/supply_booking?useUnicode=true&characterEncoding=utf8mb4&serverTimezone=Asia/Shanghai&useSSL=false
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root123456
+      SPRING_REDIS_HOST: redis
+      SPRING_REDIS_PASSWORD: redis123456
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_USERNAME: admin
+      SPRING_RABBITMQ_PASSWORD: admin123456
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    profiles:
+      - all
+      - supply
+    networks:
+      - portfolio-network
+
+  enterprise-rag-knowledge:
+    build:
+      context: ./enterprise-rag-knowledge
+      dockerfile: Dockerfile
+    container_name: portfolio-rag-knowledge
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/rag_knowledge?useUnicode=true&characterEncoding=utf8mb4&serverTimezone=Asia/Shanghai&useSSL=false
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root123456
+      SPRING_REDIS_HOST: redis
+      SPRING_REDIS_PASSWORD: redis123456
+      OLLAMA_BASE_URL: http://ollama:11434
+    ports:
+      - "8081:8081"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      ollama:
+        condition: service_started
+    profiles:
+      - all
+      - rag
+    networks:
+      - portfolio-network
+
+  auth-gateway:
+    build:
+      context: ./micro-service-auth-center/auth-gateway
+      dockerfile: Dockerfile
+    container_name: portfolio-auth-gateway
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR: nacos:8848
+      SPRING_REDIS_HOST: redis
+      SPRING_REDIS_PASSWORD: redis123456
+    ports:
+      - "9000:9000"
+    depends_on:
+      nacos:
+        condition: service_started
+      redis:
+        condition: service_healthy
+    profiles:
+      - all
+      - auth
+    networks:
+      - portfolio-network
+
+  auth-system:
+    build:
+      context: ./micro-service-auth-center/auth-system
+      dockerfile: Dockerfile
+    container_name: portfolio-auth-system
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/auth_center?useUnicode=true&characterEncoding=utf8mb4&serverTimezone=Asia/Shanghai&useSSL=false
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root123456
+      SPRING_REDIS_HOST: redis
+      SPRING_REDIS_PASSWORD: redis123456
+      SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR: nacos:8848
+    ports:
+      - "8082:8082"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      nacos:
+        condition: service_started
+    profiles:
+      - all
+      - auth
+    networks:
+      - portfolio-network
+
+volumes:
+  mysql-data:
+  redis-data:
+  rabbitmq-data:
+  ollama-data:
+
+networks:
+  portfolio-network:
+    driver: bridge

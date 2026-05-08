@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qinyoucheng.auth.system.mapper.SysDataPermissionMapper">
+
+    <select id="selectPageWithDetail" resultType="com.qinyoucheng.auth.system.entity.SysDataPermission">
+        SELECT dp.*, r.role_name FROM sys_data_permission dp
+        LEFT JOIN sys_role r ON dp.role_id = r.id
+        WHERE dp.deleted = 0
+        <if test="roleId != null">
+            AND dp.role_id = #{roleId}
+        </if>
+        <if test="appKey != null and appKey != ''">
+            AND dp.app_key = #{appKey}
+        </if>
+        ORDER BY dp.create_time DESC
+    </select>
+
+    <select id="selectByRoleId" resultType="com.qinyoucheng.auth.system.entity.SysDataPermission">
+        SELECT * FROM sys_data_permission
+        WHERE role_id = #{roleId} AND app_key = #{appKey} AND deleted = 0
+        LIMIT 1
+    </select>
+
+</mapper>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qinyoucheng.auth.system.mapper.SysBlackListMapper">
+
+    <select id="selectPageWithCondition" resultType="com.qinyoucheng.auth.system.entity.SysBlackList">
+        SELECT * FROM sys_blacklist WHERE deleted = 0
+        <if test="targetType != null">
+            AND target_type = #{targetType}
+        </if>
+        <if test="appKey != null and appKey != ''">
+            AND app_key = #{appKey}
+        </if>
+        ORDER BY create_time DESC
+    </select>
+
+</mapper>
