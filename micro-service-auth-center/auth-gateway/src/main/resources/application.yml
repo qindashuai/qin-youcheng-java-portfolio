@@ -1,4 +1,4 @@
-server:
+﻿server:
   port: 8080
 
 spring:
@@ -41,7 +41,7 @@ spring:
         max-wait: 3000ms
 
 jwt:
-  secret: qinyoucheng-micro-service-auth-center-jwt-secret-key-2024
+  secret: qindashuai-micro-service-auth-center-jwt-secret-key-2024
   access-token-expiration: 7200000
   refresh-token-expiration: 604800000
 
@@ -54,5 +54,5 @@ gateway:
 
 logging:
   level:
-    com.qinyoucheng.auth.gateway: DEBUG
+    com.qindashuai.auth.gateway: DEBUG
     org.springframework.cloud.gateway: DEBUG

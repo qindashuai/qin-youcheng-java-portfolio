@@ -1,4 +1,4 @@
-# Java Common Toolkit
+﻿# Java Common Toolkit
 
 企业级 Java 通用组件封装库，基于 Spring Boot 2.7.x，提供开箱即用的通用功能组件。
 
@@ -23,7 +23,7 @@
 
 ```xml
 <dependency>
-    <groupId>com.qinyoucheng</groupId>
+    <groupId>com.qindashuai</groupId>
     <artifactId>java-common-toolkit</artifactId>
     <version>1.0.0</version>
 </dependency>

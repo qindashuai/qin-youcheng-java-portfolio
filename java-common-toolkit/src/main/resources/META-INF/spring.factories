@@ -1,8 +1,8 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.qinyoucheng.toolkit.jwt.JwtAutoConfiguration,\
-  com.qinyoucheng.toolkit.redis.RedisAutoConfiguration,\
-  com.qinyoucheng.toolkit.lock.LockAutoConfiguration,\
-  com.qinyoucheng.toolkit.excel.ExcelAutoConfiguration,\
-  com.qinyoucheng.toolkit.ratelimit.RateLimiterAutoConfiguration,\
-  com.qinyoucheng.toolkit.trace.TraceAutoConfiguration,\
-  com.qinyoucheng.toolkit.idempotent.IdempotentAutoConfiguration
+﻿org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.qindashuai.toolkit.jwt.JwtAutoConfiguration,\
+  com.qindashuai.toolkit.redis.RedisAutoConfiguration,\
+  com.qindashuai.toolkit.lock.LockAutoConfiguration,\
+  com.qindashuai.toolkit.excel.ExcelAutoConfiguration,\
+  com.qindashuai.toolkit.ratelimit.RateLimiterAutoConfiguration,\
+  com.qindashuai.toolkit.trace.TraceAutoConfiguration,\
+  com.qindashuai.toolkit.idempotent.IdempotentAutoConfiguration

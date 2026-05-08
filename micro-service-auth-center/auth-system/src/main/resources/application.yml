@@ -1,4 +1,4 @@
-server:
+﻿server:
   port: 8081
 
 spring:
@@ -49,7 +49,7 @@ spring:
 
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**/*.xml
-  type-aliases-package: com.qinyoucheng.auth.system.entity
+  type-aliases-package: com.qindashuai.auth.system.entity
   configuration:
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
@@ -60,11 +60,11 @@ mybatis-plus:
       logic-not-delete-value: 0
 
 jwt:
-  secret: qinyoucheng-micro-service-auth-center-jwt-secret-key-2024
+  secret: qindashuai-micro-service-auth-center-jwt-secret-key-2024
   access-token-expiration: 7200000
   refresh-token-expiration: 604800000
 
 logging:
   level:
-    com.qinyoucheng.auth.system: DEBUG
-    com.qinyoucheng.auth.system.mapper: DEBUG
+    com.qindashuai.auth.system: DEBUG
+    com.qindashuai.auth.system.mapper: DEBUG

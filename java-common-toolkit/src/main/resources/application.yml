@@ -1,7 +1,7 @@
-toolkit:
+﻿toolkit:
   jwt:
     secret: defaultSecretKeyForHmacSha256AlgorithmMustBe256BitsLong
-    issuer: qinyoucheng-toolkit
+    issuer: qindashuai-toolkit
     access-token-expiration: 7200000
     refresh-token-expiration: 604800000
     token-header: Authorization

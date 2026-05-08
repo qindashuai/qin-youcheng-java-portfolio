@@ -19,4 +19,4 @@ rag:
 
 logging:
   level:
-    com.qinyoucheng.rag: info
+    com.qindashuai.rag: info

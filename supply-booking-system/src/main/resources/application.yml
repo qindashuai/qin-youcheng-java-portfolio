@@ -1,4 +1,4 @@
-server:
+﻿server:
   port: 8080
   servlet:
     context-path: /
@@ -17,7 +17,7 @@ spring:
 
 mybatis-plus:
   mapper-locations: classpath:mapper/**/*.xml
-  type-aliases-package: com.qinyoucheng.supply.entity
+  type-aliases-package: com.qindashuai.supply.entity
   configuration:
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
@@ -30,4 +30,4 @@ mybatis-plus:
 
 logging:
   level:
-    com.qinyoucheng.supply: debug
+    com.qindashuai.supply: debug

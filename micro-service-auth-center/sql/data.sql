@@ -1,4 +1,4 @@
-USE auth_center;
+﻿USE auth_center;
 
 -- ----------------------------
 -- 初始化菜单数据
@@ -39,9 +39,9 @@ INSERT INTO sys_role (id, role_name, role_code, description, status, sort, app_k
 -- 初始化用户数据 (密码均为 admin123)
 -- ----------------------------
 INSERT INTO sys_user (id, username, password, nickname, email, phone, status, dept_id, app_key) VALUES
-(1, 'admin', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '超级管理员', 'admin@qinyoucheng.com', '13800138000', 1, 1, 'default_system'),
-(2, 'system_admin', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '系统管理员', 'sysadmin@qinyoucheng.com', '13800138001', 1, 1, 'default_system'),
-(3, 'normal_user', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '普通用户', 'user@qinyoucheng.com', '13800138002', 1, 2, 'default_system');
+(1, 'admin', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '超级管理员', 'admin@qindashuai.com', '13800138000', 1, 1, 'default_system'),
+(2, 'system_admin', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '系统管理员', 'sysadmin@qindashuai.com', '13800138001', 1, 1, 'default_system'),
+(3, 'normal_user', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '普通用户', 'user@qindashuai.com', '13800138002', 1, 2, 'default_system');
 
 -- ----------------------------
 -- 初始化用户角色关联

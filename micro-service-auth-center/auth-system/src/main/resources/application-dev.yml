@@ -1,4 +1,4 @@
-spring:
+﻿spring:
   cloud:
     nacos:
       discovery:
@@ -17,4 +17,4 @@ spring:
 
 logging:
   level:
-    com.qinyoucheng.auth.system: INFO
+    com.qindashuai.auth.system: INFO

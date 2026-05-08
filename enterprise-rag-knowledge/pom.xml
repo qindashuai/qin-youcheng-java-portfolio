@@ -11,7 +11,7 @@
         <relativePath/>
     </parent>
 
-    <groupId>com.qinyoucheng</groupId>
+    <groupId>com.qindashuai</groupId>
     <artifactId>enterprise-rag-knowledge</artifactId>
     <version>1.0.0</version>
     <name>enterprise-rag-knowledge</name>

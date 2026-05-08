@@ -19,5 +19,5 @@ spring:
 
 logging:
   level:
-    com.qinyoucheng.rag: debug
+    com.qindashuai.rag: debug
     dev.langchain4j: debug
